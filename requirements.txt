@@ -1,0 +1,22 @@
+# Google Translate module
+goslate
+
+# Google Drive
+PyDrive
+
+# Gmail
+git+https://github.com/charlierguo/gmail.git
+
+# Google Calendar
+# GoogleCalendar
+# https://pypi.python.org/pypi/GoogleCalendarV3/
+gdata
+
+# Google Maps
+python-gmaps
+
+# Google Search
+pygoogle-simple
+
+# Google Voice
+# https://bitbucket.org/jaraco/googlevoice
