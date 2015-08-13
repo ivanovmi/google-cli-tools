@@ -3,6 +3,7 @@ goslate
 
 # Google Drive
 PyDrive
+libdriveuploader
 
 # Gmail
 git+https://github.com/charlierguo/gmail.git
