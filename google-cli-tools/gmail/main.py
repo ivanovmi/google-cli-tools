@@ -21,7 +21,7 @@ def init():
     login = raw_input('Gmail user: ')
     password = getpass.getpass()
     g = gmail.Gmail()
-    retry = ''
+
     while True:
         try:
             g.login(login, password)
@@ -33,8 +33,6 @@ def init():
 
 def main():
     account = init()
-    print type(account)
-    '''
     unreads = account.inbox().mail(unread=True)
     count = 0
     wanna = ''
@@ -47,10 +45,12 @@ def main():
                 space = 70 - len(unreads[i].subject)
             else:
                 space = 1
-            print i+1, '\t|\t', unreads[i].subject, ' '*space, '|\t', unreads[i].fr
+            print i+1, '\t|\t', unreads[i].subject, \
+                ' '*space, '|\t', unreads[i].fr
 
         while wanna.lower() not in ['y', 'yes', 'n', 'no', 'r']:
-            wanna = raw_input('You wanna see next 10 messages?[y/n/r for read] ')
+            wanna = raw_input('You wanna see next 10 messages?'
+                              '[y/n/r for read] ')
         if wanna.lower() in ['y', 'yes']:
             count += 10
             wanna = ''
@@ -61,5 +61,6 @@ def main():
             break
 
     account.logout()
-    '''
+
+
 main()
