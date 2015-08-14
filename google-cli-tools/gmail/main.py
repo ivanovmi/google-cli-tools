@@ -22,12 +22,12 @@ def init():
     password = getpass.getpass()
     g = gmail.Gmail()
 
-    while True:
-        try:
-            g.login(login, password)
-        except gmail.exceptions.AuthenticationError:
-            print 'You give wrong credentials for system.'
-            raise SystemExit
+    try:
+        g.login(login, password)
+    except gmail.exceptions.AuthenticationError:
+        print 'You give wrong credentials for system.'
+        raise SystemExit
+
     return g
 
 
@@ -61,6 +61,5 @@ def main():
             break
 
     account.logout()
-
 
 main()

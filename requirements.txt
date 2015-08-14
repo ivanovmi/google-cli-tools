@@ -1,6 +1,3 @@
-# Magic
-git+https://github.com/ahupp/python-magic.git
-
 # Google Translate module
 goslate
 
