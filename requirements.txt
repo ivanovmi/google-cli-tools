@@ -2,8 +2,7 @@
 goslate
 
 # Google Drive
-PyDrive
-libdriveuploader
+google-api-python-client
 
 # Gmail
 git+https://github.com/charlierguo/gmail.git
