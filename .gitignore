@@ -60,5 +60,6 @@ target/
 .idea/
 
 # etc/ garbage
-*api.json
-
+etc/*api.json
+etc/.credentials
+test.py

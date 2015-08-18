@@ -3,20 +3,24 @@
 
 __author__ = 'michael'
 
+import mimetypes
 import googleapiclient
-import pydrive
+from googleapiclient.discovery import build
+from oauth2client import tools
+from oauth2client import client
+from oauth2client import file
 import sys
 import os
 import argparse
 import oauth2client
-from oauth2client import file
-from oauth2client import tools
-from oauth2client import client
-from googleapiclient.discovery import build
+import httplib2
+import readline
+import glob
 
-#sys.path.append(os.path.dirname(os.path.realpath(__file__))[:-6:])
-#global tools
-#import tools
+sys.path.append(os.path.dirname(os.path.realpath(__file__))[:-6:])
+global tool
+import tools as tool
+
 APPLICATION_NAME = 'google-cli-tools'
 CLIENT_SECRET_FILE = 'etc/client_secrets.json'
 CREDENTIALS_PATH = 'etc/drive-api.json'
@@ -45,32 +49,29 @@ def authentication():
         print 'Storing credentials to %s' % CREDENTIALS_PATH
     return credentials
 
-'''
-from pydrive.auth import GoogleAuth
-from pydrive.drive import GoogleDrive
 
-home_dir = os.path.abspath('google-cli-tools')
-print home_dir
-print os.path.join(home_dir, 'etc')
-gauth = GoogleAuth(settings_file='etc/drive_setting.yaml')
-gauth.LocalWebserverAuth()
+def complete(text, state):
+    return (glob.glob(text+'*')+[None])[state]
 
-drive = GoogleDrive()
 
-file_list = drive.ListFile({'q': "'root' in parents"}).GetList()
-for file1 in file_list:
-    print 'title: %s, id: %s' % (file1['title'], file1['id'])
-'''
-import httplib2
-FILENAME = os.path.abspath('google-cli-tools/drive/document.txt')
+readline.set_completer_delims(' \t\n;')
+readline.parse_and_bind("tab: complete")
+readline.set_completer(complete)
 
+
+filename = raw_input('Enter the path to file: ')
+FILENAME = os.path.abspath(filename)
+print os.path.basename(FILENAME)
+
+mimetypes.init()
 # Metadata about the file.
-MIMETYPE = 'text/plain'
-TITLE = 'My New Text Document'
+MIMETYPE = mimetypes.MimeTypes().guess_type(FILENAME)[0]
+if MIMETYPE is None:
+    MIMETYPE = 'text/plain'
+TITLE = os.path.basename(FILENAME)
 DESCRIPTION = 'A shiny new text document about hello world.'
 
 
-#http = authentication()
 credentials = authentication()
 http = httplib2.Http()
 credentials.authorize(http)
@@ -85,10 +86,12 @@ media_body = googleapiclient.http.MediaFileUpload(
 )
 # The body contains the metadata for the file.
 body = {
-  'title': TITLE,
-  'description': DESCRIPTION,
+    'title': TITLE,
+    'description': DESCRIPTION,
 }
-import pprint
+
 # Perform the request and print the result.
-new_file = drive_service.files().insert(body=body, media_body=media_body).execute()
-pprint.pprint(new_file)
+new_file = drive_service.files().insert(
+    body=body, media_body=media_body).execute()
+
+tool.MyPrettyPrinter().pprint(new_file['alternateLink'])
